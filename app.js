@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000;
-//const conectString = 'mongodb+srv://anupreet16062000:<db_password>@cluster0.d7qkrh1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+//const conectString = 'mongodb+srv://anupreet0001327:<db_password>@cluster0.d7qkrh1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 const conectString = 'mongodb+srv://anupreet16062000:Anu23@cluster0.d7qkrh1.mongodb.net/UserDB?retryWrites=true&w=majority&appName=Cluster0'
 
 // Middleware
@@ -23,6 +23,7 @@ mongoose
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
+  organization: { type: String, required: true },
 });
 
 const User = mongoose.model('User', userSchema);
@@ -33,7 +34,7 @@ const User = mongoose.model('User', userSchema);
 app.post('/users', async (req, res) => {
   try {
     const { name, email } = req.body;
-    const user = new User({ name, email });
+    const user = new User({ name, email, organization });
     await user.save();
     res.status(201).send(user);
   } catch (error) {
@@ -69,8 +70,8 @@ app.get('/users/:id', async (req, res) => {
 app.put('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email } = req.body;
-    const user = await User.findByIdAndUpdate(id, { name, email }, { new: true });
+    const { name, email, organization } = req.body;
+    const user = await User.findByIdAndUpdate(id, { name, email, organization }, { new: true });
     if (!user) {
       return res.status(404).send('User not found');
     }
